@@ -27,16 +27,14 @@ public class MangaCRUDServiceImpl implements MangaCRUDService {
     }
 
     @Override
-    public Manga readManda(String mangaName) {
+    public Manga readManga(String mangaName) {
         return mangaRepository.findByName(mangaName);
     }
     @Override
     public Manga updateManga(Manga manga) {
-        if(manga.getId() != null
-            && mangaRepository.findByName(manga.getName()) != null)
+        if(mangaRepository.findById(manga.getId()) != null)
         {
             return mangaRepository.save(manga);
-
         }
         //implementar does not exist
         throw new RuntimeException();

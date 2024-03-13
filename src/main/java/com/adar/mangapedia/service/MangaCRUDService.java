@@ -9,7 +9,7 @@ public interface MangaCRUDService {
 
     public Manga updateManga(Manga manga);
 
-    public Manga readManda(String mangaName);
+    public Manga readManga(String mangaName);
 
     public void deleteManga(String name);
 }

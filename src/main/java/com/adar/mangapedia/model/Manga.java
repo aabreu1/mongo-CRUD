@@ -2,16 +2,18 @@ package com.adar.mangapedia.model;
 
 import jakarta.persistence.Id;
 import org.bson.types.ObjectId;
+import org.hibernate.mapping.List;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Set;
 
 @Document(collection = "Manga")
 public class Manga {
 
     @Id
-    ObjectId id;
+    String id;
     String name;
     String description;
     Set<String> type;
@@ -23,10 +25,10 @@ public class Manga {
     LocalDate releaseDate;
     Long score;
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
     public String getName() {
