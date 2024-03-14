@@ -50,7 +50,7 @@ public class MangaCRUDServiceImplTest {
     public void testFindMangaOK(){
         Mockito.when(mangaRepository.findByName(Mockito.anyString())).thenReturn(Optional.of(MangaMapper.mapTo(this.genManga())));
         ResponseEntity<String> responseEntity = mangaCRUDService.readManga(this.genManga().getName());
-        Assertions.assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
+        Assertions.assertEquals(HttpStatus.CREATED,responseEntity.getStatusCode());
     }
     @Test
     public void testFindNotFoundRequest(){
