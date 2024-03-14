@@ -1,6 +1,7 @@
 package com.adar.mangapedia.controller;
 
 
+import com.adar.mangapedia.dto.MangaDTO;
 import com.adar.mangapedia.model.Manga;
 import com.adar.mangapedia.service.MangaCRUDService;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class MangaController {
     }
 
     @PostMapping(value = "/create", consumes = "application/json", produces = "application/json; charset=UTF-8")
-    public ResponseEntity<String> createManga(@RequestBody Manga manga){
+    public ResponseEntity<String> createManga(@RequestBody MangaDTO manga){
         return mangaCRUDService.createManga(manga);
     }
 
@@ -26,7 +27,7 @@ public class MangaController {
     }
 
     @PutMapping(value = "/update", consumes = "application/json", produces = "application/json; charset=UTF-8")
-    public ResponseEntity<String> updateManga(@RequestBody Manga manga){
+    public ResponseEntity<String> updateManga(@RequestBody MangaDTO manga){
         return mangaCRUDService.updateManga(manga);
     }
 

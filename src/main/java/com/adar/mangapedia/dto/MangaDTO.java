@@ -1,15 +1,14 @@
-package com.adar.mangapedia.model;
+package com.adar.mangapedia.dto;
 
-import jakarta.persistence.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.time.LocalDate;
 import java.util.Set;
 
-@Document(collection = "Manga")
-public class Manga {
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public class MangaDTO {
 
-    @Id
     String id;
     String name;
     String description;

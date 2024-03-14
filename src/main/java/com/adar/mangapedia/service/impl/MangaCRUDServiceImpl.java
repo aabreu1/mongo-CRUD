@@ -1,5 +1,7 @@
 package com.adar.mangapedia.service.impl;
 
+import com.adar.mangapedia.dto.MangaDTO;
+import com.adar.mangapedia.mapper.MangaMapper;
 import com.adar.mangapedia.model.Manga;
 import com.adar.mangapedia.reporsitory.MangaRepository;
 import com.adar.mangapedia.service.MangaCRUDService;
@@ -22,12 +24,12 @@ public class MangaCRUDServiceImpl implements MangaCRUDService {
 
 
     @Override
-    public ResponseEntity<String> createManga(Manga manga) {
+    public ResponseEntity<String> createManga(MangaDTO manga) {
         try {
             if( mangaRepository.findByName(manga.getName()).isPresent()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Manga [" + manga.getName() + "] ya existe");
             }
-            mangaRepository.save(manga);
+            mangaRepository.save(MangaMapper.mapTo(manga));
             return ResponseEntity.ok("Manga ["+manga.getName()+"] Registrado");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al registrar ["+manga.getName()+"]");
@@ -40,7 +42,7 @@ public class MangaCRUDServiceImpl implements MangaCRUDService {
         try {
             Optional<Manga> manga = mangaRepository.findByName(mangaName);
             if (manga.isPresent()) {
-                return ResponseEntity.ok(manga.get());
+                return ResponseEntity.ok(MangaMapper.mapTo(manga.get()));
             } else {
                 return ResponseEntity.ok("Manga [" + mangaName + "] no encontrado");
             }
@@ -49,11 +51,11 @@ public class MangaCRUDServiceImpl implements MangaCRUDService {
         }
     }
     @Override
-    public ResponseEntity<String>  updateManga(Manga manga) {
+    public ResponseEntity<String>  updateManga(MangaDTO manga) {
         try{
             if(mangaRepository.findById(manga.getId()).isPresent())
             {
-                mangaRepository.save(manga);
+                mangaRepository.save(MangaMapper.mapTo(manga));
                 return ResponseEntity.ok("Manga ["+manga.getName()+"] Actualizado");
 
             }else{
@@ -66,18 +68,18 @@ public class MangaCRUDServiceImpl implements MangaCRUDService {
 
 
     @Override
-    public ResponseEntity<String>  deleteManga(String name) {
+    public ResponseEntity<String>  deleteManga(String mangaName) {
         try {
-            Optional<Manga> manga = mangaRepository.findByName(name);
+            Optional<Manga> manga = mangaRepository.findByName(mangaName);
             if(manga.isPresent()) {
                 mangaRepository.delete(manga.get());
             }else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Manga Id: [" + name + "] no existe");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Manga Id: [" + mangaName + "] no existe");
             }
-            return ResponseEntity.ok("Manga [" + name + "] Eliminado");
+            return ResponseEntity.ok("Manga [" + mangaName + "] Eliminado");
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar [" + name + "]");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar [" + mangaName + "]");
         }
     }
 }
