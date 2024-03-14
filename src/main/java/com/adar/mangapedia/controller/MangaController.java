@@ -17,26 +17,22 @@ public class MangaController {
 
     @PostMapping(value = "/create", consumes = "application/json", produces = "application/json; charset=UTF-8")
     public ResponseEntity<String> createManga(@RequestBody Manga manga){
-        //TODO: dividir DTO de document model
-        mangaCRUDService.createManga(manga);
-        return ResponseEntity.ok("Manga {"+manga.getName()+"} Registrado");
+        return mangaCRUDService.createManga(manga);
     }
 
     @GetMapping(value = "/find/{name}", produces = "application/json; charset=UTF-8")
-    public ResponseEntity<Manga> findManga(@PathVariable String name){
-        return ResponseEntity.ok(mangaCRUDService.readManga(name));
+    public ResponseEntity findManga(@PathVariable String name){
+        return mangaCRUDService.readManga(name);
     }
 
     @PutMapping(value = "/update", consumes = "application/json", produces = "application/json; charset=UTF-8")
     public ResponseEntity<String> updateManga(@RequestBody Manga manga){
-        mangaCRUDService.updateManga(manga);
-        return ResponseEntity.ok("Manga {"+manga.getName()+"} Actualizado");
+        return mangaCRUDService.updateManga(manga);
     }
 
     @DeleteMapping (value = "/delete/{name}", produces = "application/json; charset=UTF-8")
     public ResponseEntity<String> deleteManga(@PathVariable String name){
-        mangaCRUDService.deleteManga(name);
-        return ResponseEntity.ok("Manga {"+name+"} Eliminado");
+        return mangaCRUDService.deleteManga(name);
     }
 
 }

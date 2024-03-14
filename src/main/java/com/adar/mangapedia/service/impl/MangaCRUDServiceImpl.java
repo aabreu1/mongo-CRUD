@@ -4,7 +4,11 @@ import com.adar.mangapedia.model.Manga;
 import com.adar.mangapedia.reporsitory.MangaRepository;
 import com.adar.mangapedia.service.MangaCRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class MangaCRUDServiceImpl implements MangaCRUDService {
@@ -18,32 +22,62 @@ public class MangaCRUDServiceImpl implements MangaCRUDService {
 
 
     @Override
-    public Manga createManga(Manga manga) {
-        if( mangaRepository.findByName(manga.getName()) != null) {
-            //implementar already exist
-            throw new RuntimeException();
+    public ResponseEntity<String> createManga(Manga manga) {
+        try {
+            if( mangaRepository.findByName(manga.getName()).isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Manga [" + manga.getName() + "] ya existe");
+            }
+            mangaRepository.save(manga);
+            return ResponseEntity.ok("Manga ["+manga.getName()+"] Registrado");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al registrar ["+manga.getName()+"]");
+
         }
-        return mangaRepository.save(manga);
     }
 
     @Override
-    public Manga readManga(String mangaName) {
-        return mangaRepository.findByName(mangaName);
-    }
-    @Override
-    public Manga updateManga(Manga manga) {
-        if(mangaRepository.findById(manga.getId()) != null)
-        {
-            return mangaRepository.save(manga);
+    public ResponseEntity readManga(String mangaName) {
+        try {
+            Optional<Manga> manga = mangaRepository.findByName(mangaName);
+            if (manga.isPresent()) {
+                return ResponseEntity.ok(manga.get());
+            } else {
+                return ResponseEntity.ok("Manga [" + mangaName + "] no encontrado");
+            }
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al buscar ["+mangaName+"]");
         }
-        //implementar does not exist
-        throw new RuntimeException();
+    }
+    @Override
+    public ResponseEntity<String>  updateManga(Manga manga) {
+        try{
+            if(mangaRepository.findById(manga.getId()).isPresent())
+            {
+                mangaRepository.save(manga);
+                return ResponseEntity.ok("Manga ["+manga.getName()+"] Actualizado");
+
+            }else{
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Manga Id: [" + manga.getId() + "] no existe");
+            }
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar ["+manga.getId()+"]");
+        }
     }
 
 
     @Override
-    public void deleteManga(String name) {
-        //TODO: valida que exista
-        mangaRepository.delete(mangaRepository.findByName(name));
+    public ResponseEntity<String>  deleteManga(String name) {
+        try {
+            Optional<Manga> manga = mangaRepository.findByName(name);
+            if(manga.isPresent()) {
+                mangaRepository.delete(manga.get());
+            }else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Manga Id: [" + name + "] no existe");
+            }
+            return ResponseEntity.ok("Manga [" + name + "] Eliminado");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar [" + name + "]");
+        }
     }
 }
