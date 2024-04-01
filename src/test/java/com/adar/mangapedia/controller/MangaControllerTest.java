@@ -1,6 +1,7 @@
 package com.adar.mangapedia.controller;
 
 import com.adar.mangapedia.dto.MangaDTO;
+import com.adar.mangapedia.dto.VolumeDTO;
 import com.adar.mangapedia.service.MangaCRUDService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.awt.image.ImageProducer;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -179,10 +182,9 @@ public class MangaControllerTest {
         MangaDTO manga = new MangaDTO();
         manga.setId("123");
         manga.setName("Manga test");
-        manga.setChapters("10");
-        manga.setVolumes("1");
         manga.setAuthorName("autor del manga");
-        manga.setReleaseDate(LocalDate.parse("2000-12-31"));
+        manga.setVolumes(new ArrayList<>());
+        manga.getVolumes().add(new VolumeDTO(1, "10", "cover", LocalDate.parse("2000-12-31")));
         manga.setScore(9L);
         manga.setAuthorName("x");
         return manga;

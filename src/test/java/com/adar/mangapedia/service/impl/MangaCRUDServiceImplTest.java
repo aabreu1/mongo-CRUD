@@ -1,6 +1,7 @@
 package com.adar.mangapedia.service.impl;
 
 import com.adar.mangapedia.dto.MangaDTO;
+import com.adar.mangapedia.dto.VolumeDTO;
 import com.adar.mangapedia.mapper.MangaMapper;
 import com.adar.mangapedia.reporsitory.MangaRepository;
 import com.adar.mangapedia.service.MangaCRUDService;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @SpringBootTest(classes = MangaCRUDServiceImpl.class)
@@ -50,7 +52,7 @@ public class MangaCRUDServiceImplTest {
     public void testFindMangaOK(){
         Mockito.when(mangaRepository.findByName(Mockito.anyString())).thenReturn(Optional.of(MangaMapper.mapTo(this.genManga())));
         ResponseEntity<String> responseEntity = mangaCRUDService.readManga(this.genManga().getName());
-        Assertions.assertEquals(HttpStatus.CREATED,responseEntity.getStatusCode());
+        Assertions.assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
     }
     @Test
     public void testFindNotFoundRequest(){
@@ -116,10 +118,9 @@ public class MangaCRUDServiceImplTest {
          MangaDTO manga = new MangaDTO();
          manga.setId("123");
          manga.setName("Manga test");
-         manga.setChapters("10");
-         manga.setVolumes("1");
+         manga.setVolumes(new ArrayList<>());
+         manga.getVolumes().add(new VolumeDTO(1, "10", "cover", LocalDate.parse("2000-12-31")));
          manga.setAuthorName("autor del manga");
-         manga.setReleaseDate(LocalDate.parse("2000-12-31"));
          manga.setScore(9L);
          manga.setAuthorName("x");
          return manga;

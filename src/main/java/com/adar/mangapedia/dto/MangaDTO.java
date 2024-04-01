@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -13,12 +14,8 @@ public class MangaDTO {
     String name;
     String description;
     Set<String> type;
-    String chapters;
-    String volumes;
-    //TODO: variable para iamgen
-    Byte[] cover;
+    List<VolumeDTO> volumes;
     String authorName;
-    LocalDate releaseDate;
     Long score;
 
     public String getId() {
@@ -45,36 +42,23 @@ public class MangaDTO {
     public void setType(Set<String> type) {
         this.type = type;
     }
-    public String getChapters() {
-        return chapters;
-    }
-    public void setChapters(String chapters) {
-        this.chapters = chapters;
-    }
-    public String getVolumes() {
+
+    public List<VolumeDTO> getVolumes() {
         return volumes;
     }
-    public void setVolumes(String volumes) {
+
+    public void setVolumes(List<VolumeDTO> volumes) {
         this.volumes = volumes;
     }
-    public Byte[] getCover() {
-        return cover;
-    }
-    public void setCover(Byte[] cover) {
-        this.cover = cover;
-    }
+
     public String getAuthorName() {
         return authorName;
     }
+
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
     }
-    public LocalDate getReleaseDate() {
-        return releaseDate;
-    }
-    public void setReleaseDate(LocalDate releaseDate) {
-        this.releaseDate = releaseDate;
-    }
+
     public Long getScore() {
         return score;
     }
